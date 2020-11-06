@@ -22,8 +22,8 @@ _start:
     syscall
 
     ; Get the height from the user
-    xor rax, rax
-    xor rdi, rdi
+    xor eax, eax
+    xor edi, edi
     mov rsi, height
     mov rdx, 1
     syscall
@@ -40,12 +40,12 @@ _start:
     call _checkInput
 
     ; Loop each row of the pyramid
-    xor rcx, rcx
+    xor ecx, ecx
     call _rowLoop
 
     ; Exit the program
     mov rax, 60
-    xor rdi, rdi
+    xor edi, edi
     syscall
 
 ; Loop over every row in the pyramid
@@ -57,7 +57,7 @@ _rowLoop:
     sub rax, rcx
     dec rax
     push rcx
-    xor rcx, rcx
+    xor ecx, ecx
 
     ; Allign the left pyramid
     call _alignLeft
@@ -66,7 +66,7 @@ _rowLoop:
     pop rcx
     mov rax, rcx
     push rcx
-    xor rcx, rcx
+    xor ecx, ecx
 
     ; Print the left pyramid
     call _printRow
@@ -82,7 +82,7 @@ _rowLoop:
     pop rcx
     mov rax, rcx
     push rcx
-    xor rcx, rcx
+    xor ecx, ecx
 
     ; Print the right pyramid
     call _printRow
@@ -174,8 +174,8 @@ _checkInput:
 ; Check if the next character in the input buffer is '\n'
 _readBuf:
     ; Read from stdin
-    xor rax, rax
-    xor rdi, rdi
+    xor eax, eax
+    xor edi, edi
     mov rsi, height
     mov rdx, 1
     syscall
