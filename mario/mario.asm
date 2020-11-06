@@ -1,8 +1,6 @@
 section .data
     prompt db "Height: "
     prompt_len equ $- prompt
-    invalid_input db "mario: Pyramid height must be an integer from 1 to 9", 0xA
-    invalid_input_len equ $- invalid_input
     symbol db "#"
     space db " "
     gap db "  "
@@ -32,7 +30,7 @@ _start:
 
     ; If user enters nothing
     cmp byte [height], 0xA
-    je _invalidInput2
+    je _start
 
     ; Convert height to an int
     mov rax, [height]
@@ -173,7 +171,7 @@ _checkInput:
 
     ret
 
-; Flush the input buffer, and then continue to _invalidInput
+; Check if the next character in the input buffer is '\n'
 _readBuf:
     ; Read from stdin
     xor rax, rax
@@ -182,27 +180,13 @@ _readBuf:
     mov rdx, 1
     syscall
 
-    ; If input == '\n', it's valid
+    ; If input != '\n', jump to _invalidInput
     cmp byte [height], 0xA
     jne _invalidInput
     ret
 
-; Warn the user and exit when input isn't valid
+; Flush the input buffer and jump to _start
 _invalidInput:
     ; Flush stdin
     call _readBuf
-
-; Continuation of _invalidInput, but without clearing
-; the input buffer, which is needed when theres no input
-_invalidInput2:
-    ; Print the warning
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, invalid_input
-    mov rdx, invalid_input_len
-    syscall
-
-    ; Exit with exit code 1
-    mov rax, 60
-    mov rdi, 1
-    syscall
+    jmp _start
