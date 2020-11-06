@@ -1,9 +1,8 @@
 section .data
     prompt db "Height: "
     prompt_len equ $- prompt
-    symbol db "#"
-    space db " "
-    gap db "  "
+    block db "#"
+    space db "  "
     newline db 0xA
 
 section .bss
@@ -74,7 +73,7 @@ _rowLoop:
     ; Print the gap
     mov rax, 1
     mov rdi, 1
-    mov rsi, gap
+    mov rsi, space
     mov rdx, 2
     syscall
 
@@ -138,10 +137,10 @@ _printRow:
     push rax
     push rcx
 
-    ; Print symbol
+    ; Print block
     mov rax, 1
     mov rdi, 1
-    mov rsi, symbol
+    mov rsi, block
     mov rdx, 1
     syscall
 
