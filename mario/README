@@ -1,0 +1,26 @@
+                         __  __               _        
+                        |  \/  |  __ _  _ __ (_)  ___  
+                        | |\/| | / _` || '__|| | / _ \ 
+                        | |  | || (_| || |   | || (_) |
+                        |_|  |_| \__,_||_|   |_| \___/ 
+                                                       
+Overview
+========
+Original problem link: https://cs50.harvard.edu/x/2020/psets/1/mario/more/
+
+The goal of Mario is simple. Prompt the user for a height, and print out two pyramids with a gap of 2 and with the height that the user wishes. The height must be between 1 and 8 inclusive, and if the user does not provide a valid input, they must be reprompted continuously until they provide a valid one.
+
+
+Example
+=======
+$ ./mario
+Height: 20
+Height: a
+Height: 7
+      *  *
+     **  **
+    ***  ***
+   ****  ****
+  *****  *****
+ ******  ******
+*******  *******
