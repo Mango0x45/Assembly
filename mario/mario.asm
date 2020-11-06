@@ -160,10 +160,10 @@ _printRow:
 
 ; Check the validity of user input
 _checkInput:
-    ; Make sure 0 < input < 10
+    ; Make sure 0 < input < 9
     cmp rax, 1
     jl _invalidInput
-    cmp rax, 9
+    cmp rax, 8
     jg _invalidInput
 
     ; Check to see if the user entered valid input
