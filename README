@@ -1,0 +1,9 @@
+                 _                                _      _        
+                / \    ___  ___   ___  _ __ ___  | |__  | | _   _ 
+               / _ \  / __|/ __| / _ \| '_ ` _ \ | '_ \ | || | | |
+              / ___ \ \__ \\__ \|  __/| | | | | || |_) || || |_| |
+             /_/   \_\|___/|___/ \___||_| |_| |_||_.__/ |_| \__, |
+                                                            |___/ 
+Overview
+========
+This is just a repository where I fle- I mean show off my assembly programs. I'm still learning, and it is a very hard language compared to the others, so any pointers and suggestions if anyone bothers to check out the code would be much appreciated. I am not 100% how assembly works with it's different flavors/dialects/whatever they're called, but the assembly used here I *believe* is called "NASM Linux64 Assembly"
