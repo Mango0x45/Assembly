@@ -3,7 +3,7 @@ section .data
     prompt_len equ $- prompt
     invalid_input db "mario: Pyramid height must be an integer from 1 to 9", 0xA
     invalid_input_len equ $- invalid_input
-    symbol db "*"
+    symbol db "#"
     space db " "
     gap db "  "
     newline db 0xA
