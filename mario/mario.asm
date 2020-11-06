@@ -1,8 +1,24 @@
-section .data
-    prompt db "Height: "
+%macro print 2
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, %1
+    mov rdx, %2
+    syscall
+%endmacro
+
+%macro getchar 1
+    xor eax, eax
+    xor edi, edi
+    mov rsi, %1
+    mov rdx, 1
+    syscall
+%endmacro
+
+section .rodata
+    prompt db "Height: ", 0
     prompt_len equ $- prompt
-    block db "#"
-    space db "  "
+    blocks db "########"
+    spaces db "       "
     newline db 0xA
 
 section .bss
@@ -14,20 +30,12 @@ section .text
 ; Program entry point
 _start:
     ; Print the prompt
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, prompt
-    mov rdx, prompt_len
-    syscall
+    print prompt, prompt_len
 
     ; Get the height from the user
-    xor eax, eax
-    xor edi, edi
-    mov rsi, height
-    mov rdx, 1
-    syscall
+    getchar height
 
-    ; If user enters nothing
+    ; If user enters nothing, reprompt
     cmp byte [height], 0xA
     je _start
 
@@ -40,7 +48,7 @@ _start:
 
     ; Loop each row of the pyramid
     xor ecx, ecx
-    call _rowLoop
+    call _printRow
 
     ; Exit the program
     mov rax, 60
@@ -48,50 +56,38 @@ _start:
     syscall
 
 ; Loop over every row in the pyramid
-_rowLoop:
-    ; Push the max to the stack
+_printRow:
+    ; Push the height to the stack
     push rax
 
-    ; Set the max and index for _alignLeft
-    sub rax, rcx
-    dec rax
+    ; Move the number of spaces to print to rbx
+    mov rbx, rax
+    sub rbx, rcx
+    dec rbx
+
+    ; Align the left pyramid
     push rcx
-    xor ecx, ecx
-
-    ; Allign the left pyramid
-    call _alignLeft
-
-    ; Set the max and index for _printRow
+    print spaces, rbx
     pop rcx
-    mov rax, rcx
-    push rcx
-    xor ecx, ecx
 
     ; Print the left pyramid
-    call _printRow
+    mov rbx, rcx
+    inc rbx
+    push rcx
+    print blocks, rbx
 
     ; Print the gap
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, space
-    mov rdx, 2
-    syscall
-
-    ; Set the max and index for _printRow
-    pop rcx
-    mov rax, rcx
-    push rcx
-    xor ecx, ecx
+    print spaces, 2
 
     ; Print the right pyramid
-    call _printRow
+    pop rcx
+    mov rbx, rcx
+    inc rbx
+    push rcx
+    print blocks, rbx
 
     ; Print a newline
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
+    print newline, 1
 
     ; Pop the index and max from the stack
     ; and increment the index
@@ -101,58 +97,7 @@ _rowLoop:
 
     ; Loop if index < max
     cmp rcx, rax
-    jl _rowLoop
-    ret
-
-; Print spaces to align the left pyramid
-_alignLeft:
-    ; Loop is index < max
-    cmp rcx, rax
-    jl _alignLeft2
-    ret
-
-_alignLeft2:
-    ; Push max and index onto the stack
-    push rax
-    push rcx
-
-    ; Print a space
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, space
-    mov rdx, 1
-    syscall
-
-    ; Pop the index and max from the stack
-    ; and increment the index
-    pop rcx
-    pop rax
-    inc rcx
-
-    jmp _alignLeft
-
-; Print a row of the pyramid
-_printRow:
-    ; Push max and index onto the stack
-    push rax
-    push rcx
-
-    ; Print block
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, block
-    mov rdx, 1
-    syscall
-
-    ; Pop the index and max from the stack
-    ; and increment the index
-    pop rcx
-    pop rax
-    inc rcx
-
-    ; Loop if index =< max
-    cmp rcx, rax
-    jle _printRow
+    jl _printRow
     ret
 
 ; Check the validity of user input
@@ -173,11 +118,7 @@ _checkInput:
 ; Check if the next character in the input buffer is '\n'
 _readBuf:
     ; Read from stdin
-    xor eax, eax
-    xor edi, edi
-    mov rsi, height
-    mov rdx, 1
-    syscall
+    getchar height
 
     ; If input != '\n', jump to _invalidInput
     cmp byte [height], 0xA
@@ -186,6 +127,6 @@ _readBuf:
 
 ; Flush the input buffer and jump to _start
 _invalidInput:
-    ; Flush stdin
+    ; Flush stdin and reprompt
     call _readBuf
     jmp _start
