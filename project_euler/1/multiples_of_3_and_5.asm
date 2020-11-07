@@ -47,7 +47,7 @@ _mulOf15:
 
 _printRAX:
 	mov rcx, digitSpace
-	mov rbx, 10
+	mov rbx, 0xA
 	mov [rcx], rbx
 	inc rcx
 	mov [digitSpacePos], rcx
