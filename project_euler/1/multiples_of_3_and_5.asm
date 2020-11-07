@@ -53,7 +53,7 @@ _printRAX:
 	mov [digitSpacePos], rcx
 
 _printRAXLoop:
-	mov rdx, 0
+    xor edx, edx
 	mov rbx, 10
 	div rbx
 	push rax
