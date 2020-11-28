@@ -15,10 +15,8 @@ _start:
 
 ; Check if rdx % 2 == 0
 _fibonacci:
-    mov     rax, rcx
-    div     r8
-    cmp     rdx, 0
-    je      _isEven
+    test    rcx, 1
+    jz      _isEven
 
 ; Compute the next fibonacci number
 _fibonacciLoop:
@@ -26,7 +24,7 @@ _fibonacciLoop:
     mov     rbx, rcx
     lea     rcx, [rax+rbx]
 
-    cmp     rcx, 0x3D0900   ; 4,000,000
+    cmp     rcx, 4000000
     jl      _fibonacci
     jmp     _exit
 
