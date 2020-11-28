@@ -11,11 +11,11 @@ section .text
 _start:
     mov     rbx, 1
     mov     rcx, 1
+    mov     r8, 2
 
 ; Check if rdx % 2 == 0
 _fibonacci:
     mov     rax, rcx
-    mov     r8, 2
     div     r8
     cmp     rdx, 0
     je      _isEven
