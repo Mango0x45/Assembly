@@ -11,7 +11,6 @@ section .text
 _start:
     mov     rbx, 1
     mov     rcx, 1
-    mov     r8, 2
 
 ; Check if rdx % 2 == 0
 _fibonacci:
